@@ -1,34 +1,27 @@
 import React from "react";
-import useGet from "./useGet";
 
-/*
-axios
-.get('https://mymoney-cleyton-default-rtdb.firebaseio.com/valor.json')
-.then(res => {
-  console.log(res.data)
-})*/
+import Rest from './rest'
 
-/*
-axios
-.post('https://mymoney-cleyton-default-rtdb.firebaseio.com/valor.json', {
-  outro: 'Cleyton Rezende'
-})
-.then(res=> {
-  console.log(res)
-})
-*/
 
-// Variavel contendo a url.
-const url = 'https://mymoney-cleyton-default-rtdb.firebaseio.com/movimentacoes/2019-08.json'
+const baseURL = 'https://mymoney-cleyton-default-rtdb.firebaseio.com/'
+
+const {useGet, usePost, useDelete} = Rest(baseURL)
 
 // Componente Pricipal
 function App() {
 
   //Variavel que chama a funcao useGet.
-  const data = useGet(url)
+  const data = useGet('movimentacoes/2019-08')
+  const [postData, post] = usePost('movimentacoes/2019-08')
+  const [deleteData, remove] = useDelete()
 
-  //Variavel contendo a url 2.
-  const data2 = useGet('http://httpbin.org/ip')
+  const saveNew = () => {
+    post({valor: 10, descricao: 'Alcool Gel'})
+  }
+
+  const doRemove = () => {
+    remove('movimentacoes/2019-08/-MqzjShiHEy-weBJm5ds')
+  }
 
   // Retorna o HTML Principal.
   return (
@@ -36,7 +29,11 @@ function App() {
       <h1>MyMoney</h1>
       {JSON.stringify(data)}
       {data.loading && <p>Loading...</p>}
-      <pre>{JSON.stringify(data2)}</pre>
+      <button onClick={saveNew}>Salvar</button>
+      <pre>{JSON.stringify(postData)}</pre>
+      <button onClick={doRemove}>Delete</button>
+      <pre>{JSON.stringify(deleteData)}</pre>
+
     </div>
   );
 }
