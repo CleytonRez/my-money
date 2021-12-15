@@ -1,6 +1,10 @@
+// Arquivo para a reducao de codigo
+
+// Imports
 import { useReducer, useEffect } from "react";
 import axios from "axios";
 
+// Componente contendo o objeto que é repetido varias vezes.
 const INITIAL_STATE = {
     loading: false,
     data: {}
@@ -25,7 +29,10 @@ const reducer = (state, action) => {
     return state
 }
 
+// Funcao que pega a baseURL como parametro.
 const init = baseURL => {
+
+    // Funcao que mostra a lista.
     const useGet = resource => {
         const [data, dispatch] = useReducer(reducer, INITIAL_STATE)
       
@@ -45,9 +52,13 @@ const init = baseURL => {
         return data
     }
 
+    // Funcao que adiciona um novo item a lista.
     const usePost = resource => {
+
+        // Estado contendo os dados.
         const [data, dispatch] = useReducer(reducer, INITIAL_STATE)
         
+        // Funcao que adiciona um novo item a lista.
         const post = data => {
             dispatch({type: 'REQUEST'})
             axios
@@ -64,9 +75,13 @@ const init = baseURL => {
         return [data,post]
     }
 
+    // Funcao que deleta um item da lista pelo id.
     const useDelete = () => {
+
+        // Estado contendo os dados.
         const [data, dispatch] = useReducer(reducer, INITIAL_STATE)
         
+        // Funcao que deleta um item da lista pelo id.
         const remove = resource => {
             dispatch({type: 'REQUEST'})
             axios
